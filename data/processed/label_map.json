@@ -1,0 +1,22 @@
+{
+  "label_map": {
+    "Normal": 0,
+    "Stress": 1,
+    "Anxiety": 1,
+    "Personality disorder": 1,
+    "Depression": 2,
+    "Suicidal": 2,
+    "Bipolar": 2
+  },
+  "risk_names": {
+    "0": "Low Risk",
+    "1": "Moderate Risk",
+    "2": "High Risk"
+  },
+  "recommended_max_length": 256,
+  "class_weights": [
+    1.1146475951302068,
+    2.043948343177495,
+    0.6197298527849446
+  ]
+}
