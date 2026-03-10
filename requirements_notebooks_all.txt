@@ -1,0 +1,37 @@
+# ── All Notebooks: Combined Requirements ─────────────────────────────────
+# Superset of notebook 01 + 02 + 03 deps.
+# Use this to set up a single environment that can run all three notebooks.
+#
+# Install: pip install -r requirements_notebooks_all.txt
+#
+# GPU note: torch below installs the CPU build by default.
+# For Colab or a CUDA machine, torch is already installed correctly —
+# skip the torch line or install the matching CUDA wheel separately:
+#   pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+
+# ── Core data ─────────────────────────────────────────────────────────────
+pandas==2.2.3
+numpy==1.26.4
+
+# ── Visualisation ─────────────────────────────────────────────────────────
+matplotlib==3.9.4
+seaborn==0.13.2
+
+# ── NLP / Classical ML ────────────────────────────────────────────────────
+scikit-learn==1.8.0
+nltk==3.9.1
+joblib==1.4.2
+
+# ── Deep learning ─────────────────────────────────────────────────────────
+torch==2.5.1
+
+# ── HuggingFace stack ─────────────────────────────────────────────────────
+transformers==4.47.1
+accelerate==1.2.1
+huggingface_hub==0.27.0
+
+# ── Notebook environment ──────────────────────────────────────────────────
+jupyter==1.1.1
+ipykernel==6.29.5
+ipywidgets==8.1.5
+tqdm==4.67.1

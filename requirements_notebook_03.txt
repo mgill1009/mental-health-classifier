@@ -1,0 +1,30 @@
+# ── Notebook 03: DistilBERT Fine-Tuning ──────────────────────────────────
+# Run on: Google Colab (T4 GPU recommended)
+# Install: pip install -r requirements_notebook_03.txt -q
+#
+# Note: torch, numpy, pandas, and matplotlib are pre-installed on Colab.
+# This file lists everything explicitly for reproducibility and for running
+# outside Colab (e.g. a local GPU machine or a GCP Vertex AI notebook).
+
+# ── Core data ─────────────────────────────────────────────────────────────
+pandas==2.2.3
+numpy==1.26.4
+
+# ── Visualisation ─────────────────────────────────────────────────────────
+matplotlib==3.9.4
+
+# ── ML / evaluation ───────────────────────────────────────────────────────
+scikit-learn==1.8.0          # classification_report, confusion_matrix, metrics
+
+# ── Deep learning ─────────────────────────────────────────────────────────
+torch==2.5.1                 # core; install CPU or CUDA build as appropriate
+                             # Colab T4: torch ships with CUDA 12.x pre-installed
+
+# ── HuggingFace stack ─────────────────────────────────────────────────────
+transformers==4.47.1         # DistilBertForSequenceClassification, Trainer
+accelerate==1.2.1            # required by Trainer for fp16 / device placement
+huggingface_hub==0.27.0      # push_to_hub, login
+
+# ── Notebook environment ──────────────────────────────────────────────────
+ipywidgets==8.1.5            # HuggingFace progress bars in Jupyter
+tqdm==4.67.1
