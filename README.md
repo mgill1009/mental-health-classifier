@@ -79,7 +79,7 @@ Both models are served through the same FastAPI endpoint, deployed on both Cloud
 
 | ID | Hypothesis | Status |
 |---|---|---|
-| H1 | DistilBERT cold start 5–10× longer than TF-IDF on serverless | ✅ Confirmed (4.7×) |
+| H1 | DistilBERT cold start 5–10× longer than TF-IDF on serverless | ⏳ Pending load tests |
 | H2 | Serverless cheaper for <500 requests/day | ⏳ Pending load tests |
 | H3 | p99 tail latency 3× higher on serverless under burst traffic | ⏳ Pending load tests |
 | H4 | INT8 quantisation reduces DistilBERT cold start by >40% | ⏳ Pending |
