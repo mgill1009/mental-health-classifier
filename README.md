@@ -1,4 +1,4 @@
-# mental-health-classifier
+# Mental Health Text Classifier
 ### Containerized vs. Serverless Deployment on GCP
 
 A 3-class mental health risk classifier comparing two cloud deployment paradigms — **Google Cloud Run** (containerized) vs **Google Cloud Functions** (serverless) — for serving ML inference workloads.
