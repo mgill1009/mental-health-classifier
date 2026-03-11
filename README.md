@@ -3,11 +3,11 @@
 
 A 3-class mental health risk classifier comparing two cloud deployment paradigms — **Google Cloud Run** (containerized) vs **Google Cloud Functions** (serverless) — for serving ML inference workloads.
 
-> ⚠️ **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
+> **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Classification Task](#classification-task)
