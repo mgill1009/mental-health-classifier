@@ -46,9 +46,9 @@ Both models are served through the same FastAPI endpoint, deployed on both Cloud
 
 | Label | Risk Tier | Original Labels | Training Rows |
 |---|---|---|---|
-| 0 | 🟢 Low Risk | Normal | 15,569 (29.9%) |
-| 1 | 🟡 Moderate Risk | Anxiety · Stress · Personality Disorder | 8,491 (16.3%) |
-| 2 | 🔴 High Risk | Depression · Suicidal · Bipolar | 28,003 (53.8%) |
+| 0 | Low Risk | Normal | 15,569 (29.9%) |
+| 1 | Moderate Risk | Anxiety · Stress · Personality Disorder | 8,491 (16.3%) |
+| 2 | High Risk | Depression · Suicidal · Bipolar | 28,003 (53.8%) |
 
 ---
 
@@ -79,10 +79,10 @@ Both models are served through the same FastAPI endpoint, deployed on both Cloud
 
 | ID | Hypothesis | Status |
 |---|---|---|
-| H1 | DistilBERT cold start 5–10× longer than TF-IDF on serverless | ⏳ Pending load tests |
-| H2 | Serverless cheaper for <500 requests/day | ⏳ Pending load tests |
-| H3 | p99 tail latency 3× higher on serverless under burst traffic | ⏳ Pending load tests |
-| H4 | INT8 quantisation reduces DistilBERT cold start by >40% | ⏳ Pending |
+| H1 | DistilBERT cold start 5–10× longer than TF-IDF on serverless | Pending load tests |
+| H2 | Serverless cheaper for <500 requests/day | Pending load tests |
+| H3 | p99 tail latency 3× higher on serverless under burst traffic | Pending load tests |
+| H4 | INT8 quantisation reduces DistilBERT cold start by >40% | Pending |
 
 ---
 
