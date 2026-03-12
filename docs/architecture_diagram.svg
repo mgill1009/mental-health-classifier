@@ -1,0 +1,110 @@
+<svg width="680" height="720" viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg">
+<title>Mental Health Risk Classifier — ML Pipeline &amp; Deployment Architecture</title>
+<defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#B4B2A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<style>
+text{font-family:system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
+.th{font-size:14px;font-weight:500}
+.ts{font-size:12px;font-weight:400}
+.cn{fill:none;stroke:#C8C6BF;stroke-width:1}
+.ar{fill:none;stroke:#C8C6BF;stroke-width:1.2}
+</style>
+
+<rect width="680" height="720" fill="white"/>
+
+<!-- Header -->
+<text x="340" y="22" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="600" font-family="system-ui,sans-serif" fill="#2C2C2A">Mental Health Risk Classifier</text>
+<text class="ts" x="340" y="40" text-anchor="middle" dominant-baseline="central" fill="#888780">ML pipeline · FastAPI · GCP deployment</text>
+<line x1="40" y1="52" x2="640" y2="52" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<!-- Data Sources -->
+<rect x="40" y="64" width="222" height="44" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="151" y="81" text-anchor="middle" dominant-baseline="central" fill="#085041">Primary dataset</text>
+<text class="ts" x="151" y="97" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">53,043 posts · 7 labels</text>
+
+<rect x="418" y="64" width="222" height="44" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="529" y="81" text-anchor="middle" dominant-baseline="central" fill="#085041">Secondary dataset</text>
+<text class="ts" x="529" y="97" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">49,612 posts</text>
+
+<!-- Merge funnel -->
+<line class="cn" x1="151" y1="108" x2="151" y2="132"/>
+<line class="cn" x1="529" y1="108" x2="529" y2="132"/>
+<line class="cn" x1="151" y1="132" x2="529" y2="132"/>
+<line class="ar" x1="340" y1="132" x2="340" y2="162" marker-end="url(#ah)"/>
+
+<!-- Preprocessing -->
+<rect x="80" y="162" width="520" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="340" y="180" text-anchor="middle" dominant-baseline="central" fill="#085041">EDA &amp; preprocessing</text>
+<text class="ts" x="340" y="200" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Train 52k · Val 9k · Test 992 (stratified, deduped)</text>
+
+<!-- Fork to models -->
+<line class="cn" x1="340" y1="218" x2="340" y2="244"/>
+<line class="cn" x1="173" y1="244" x2="507" y2="244"/>
+<line class="ar" x1="173" y1="244" x2="173" y2="272" marker-end="url(#ah)"/>
+<line class="ar" x1="507" y1="244" x2="507" y2="272" marker-end="url(#ah)"/>
+
+<!-- Models -->
+<rect x="40" y="272" width="265" height="82" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="173" y="290" text-anchor="middle" dominant-baseline="central" fill="#3C3489">TF-IDF baseline</text>
+<text class="ts" x="173" y="312" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Macro-F1: 0.784 · 3.2 MB</text>
+<text class="ts" x="173" y="332" text-anchor="middle" dominant-baseline="central" fill="#534AB7">p99 predict: 0.7ms</text>
+
+<rect x="375" y="272" width="265" height="82" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="508" y="290" text-anchor="middle" dominant-baseline="central" fill="#3C3489">DistilBERT fine-tuned</text>
+<text class="ts" x="508" y="312" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Macro-F1: 0.826 · 269 MB</text>
+<text class="ts" x="508" y="332" text-anchor="middle" dominant-baseline="central" fill="#534AB7">HuggingFace Hub</text>
+
+<!-- VS badge between models -->
+<rect x="312" y="300" width="56" height="20" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="340" y="310" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="500" font-family="system-ui,sans-serif" fill="#633806">+5.4% F1</text>
+
+<!-- Merge to FastAPI -->
+<line class="cn" x1="173" y1="354" x2="173" y2="380"/>
+<line class="cn" x1="507" y1="354" x2="507" y2="380"/>
+<line class="cn" x1="173" y1="380" x2="507" y2="380"/>
+<line class="ar" x1="340" y1="380" x2="340" y2="408" marker-end="url(#ah)"/>
+
+<!-- FastAPI -->
+<rect x="80" y="408" width="520" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="th" x="340" y="426" text-anchor="middle" dominant-baseline="central" fill="#0C447C">FastAPI serving layer</text>
+<text class="ts" x="340" y="446" text-anchor="middle" dominant-baseline="central" fill="#185FA5">POST /predict?model=tfidf|distilbert</text>
+
+<!-- Fork to deployment -->
+<line class="cn" x1="340" y1="464" x2="340" y2="490"/>
+<line class="cn" x1="173" y1="490" x2="507" y2="490"/>
+<line class="ar" x1="173" y1="490" x2="173" y2="518" marker-end="url(#ah)"/>
+<line class="ar" x1="507" y1="490" x2="507" y2="518" marker-end="url(#ah)"/>
+
+<!-- Deployment -->
+<rect x="40" y="518" width="265" height="60" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="th" x="173" y="536" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Cloud Run</text>
+<text class="ts" x="173" y="556" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Container · always-on</text>
+
+<rect x="375" y="518" width="265" height="60" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="th" x="508" y="536" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Cloud Functions</text>
+<text class="ts" x="508" y="556" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Serverless · on-demand</text>
+
+<!-- Distribute to risk tiers -->
+<line class="cn" x1="173" y1="578" x2="173" y2="604"/>
+<line class="cn" x1="507" y1="578" x2="507" y2="604"/>
+<line class="cn" x1="133" y1="604" x2="547" y2="604"/>
+<line class="ar" x1="133" y1="604" x2="133" y2="632" marker-end="url(#ah)"/>
+<line class="ar" x1="340" y1="604" x2="340" y2="632" marker-end="url(#ah)"/>
+<line class="ar" x1="547" y1="604" x2="547" y2="632" marker-end="url(#ah)"/>
+
+<!-- Risk Tier Output -->
+<rect x="40" y="632" width="186" height="44" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+<text class="th" x="133" y="654" text-anchor="middle" dominant-baseline="central" fill="#27500A">Low Risk</text>
+
+<rect x="247" y="632" width="186" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th" x="340" y="654" text-anchor="middle" dominant-baseline="central" fill="#633806">Moderate Risk</text>
+
+<rect x="454" y="632" width="186" height="44" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="th" x="547" y="654" text-anchor="middle" dominant-baseline="central" fill="#791F1F">High Risk</text>
+
+<!-- Footer -->
+<text x="340" y="694" text-anchor="middle" font-size="11" font-family="system-ui,sans-serif" fill="#C8C6BF">mgill7436/distilbert-mental-health-risk · HuggingFace Hub</text>
+</svg>
