@@ -5,6 +5,7 @@ A 3-class mental health risk classifier comparing two cloud deployment paradigms
 
 > **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
 
+![Architecture Diagram](docs/architecture_diagram.svg)
 ---
 
 ## Table of Contents
