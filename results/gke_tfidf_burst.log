@@ -1,0 +1,11 @@
+[2026-03-28 23:30:47,633] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-03-28 23:30:47,635] MacBookPro/INFO/locust.main: Run time limit set to 100 seconds
+[2026-03-28 23:30:47,636] MacBookPro/INFO/locustfile: Test started | users=100
+[2026-03-28 23:30:47,636] MacBookPro/INFO/locust.runners: Ramping to 100 users at a rate of 10.00 per second
+[2026-03-28 23:30:56,661] MacBookPro/INFO/locust.runners: All users spawned: {"GkeTfIdf": 100} (100 total users)
+[2026-03-28 23:31:02,809] MacBookPro/WARNING/locustfile: High latency: 596.41ms | [gke] tfidf
+[2026-03-28 23:31:02,810] MacBookPro/WARNING/locustfile: High latency: 596.97ms | [gke] tfidf
+[2026-03-28 23:32:27,440] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-03-28 23:32:27,507] MacBookPro/INFO/locustfile: Test finished | requests=8828 | failures=2 | p50=66ms | p95=150ms | p99=190ms | rps=92.3
+[2026-03-28 23:32:27,545] MacBookPro/INFO/locust.main: writing html report to file: results/gke_tfidf_burst.html
+[2026-03-28 23:32:27,546] MacBookPro/INFO/locust.main: Shutting down (exit code 1)

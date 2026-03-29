@@ -1,0 +1,80 @@
+# ── distilbert/deployment.yaml ────────────────────────────────────────────
+# DistilBERT serving deployment.
+# Large memory footprint — 269 MB model + torch runtime needs ~1.5 GB per pod.
+# HPA min=1 max=4 (cost-constrained: each pod costs more than TF-IDF).
+# This mirrors the real-world trade-off: large models are expensive to scale.
+# ─────────────────────────────────────────────────────────────────────────
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: distilbert-deployment
+  namespace: mh-classifier
+  labels:
+    app: distilbert-service
+    model: distilbert
+    project: mental-health-classifier
+spec:
+  replicas: 1                     # start with 1; HPA scales 1–4
+  selector:
+    matchLabels:
+      app: distilbert-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0           # zero-downtime; requires min 1 pod always running
+  template:
+    metadata:
+      labels:
+        app: distilbert-service
+        model: distilbert
+    spec:
+      # Longer grace period: DistilBERT may be mid-inference (6–15ms per call)
+      # when SIGTERM arrives; 60s is generous but safe
+      terminationGracePeriodSeconds: 60
+
+      containers:
+        - name: distilbert-api
+          image: us-central1-docker.pkg.dev/mh-classifier/mh-classifier/distilbert-api:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+              name: http
+
+          env:
+            - name: MODEL_TYPE
+              value: "distilbert"
+            - name: PORT
+              value: "8080"
+
+          # ── Resource allocation ───────────────────────────────────────
+          # DistilBERT: 269 MB model weights + torch runtime ~800 MB
+          # 1.5 Gi request ensures pod is scheduled on a node with enough RAM
+          # Limit at 3 Gi prevents OOMKill during tokenisation of long inputs
+          resources:
+            requests:
+              cpu: "500m"           # 0.5 vCPU — transformer inference is heavier
+              memory: "1500Mi"
+            limits:
+              cpu: "2000m"          # 2 vCPU max (CPU-only inference)
+              memory: "3000Mi"
+
+          # ── Health probes ─────────────────────────────────────────────
+          # Longer initialDelay: DistilBERT takes ~1s to load into memory
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 45    # wait for model load before accepting traffic
+            periodSeconds: 10
+            failureThreshold: 3

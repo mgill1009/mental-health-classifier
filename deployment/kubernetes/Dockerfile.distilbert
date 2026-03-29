@@ -1,0 +1,32 @@
+# ── Dockerfile.distilbert ─────────────────────────────────────────────────
+# Heavy image: DistilBERT only.
+# Used for the distilbert-service Kubernetes Deployment.
+# Image size: ~2.4 GB (torch + transformers + 269 MB model)
+# Memory request: 1.5Gi  |  Memory limit: 3Gi
+# CPU inference only (no GPU node pool required for this project)
+# ─────────────────────────────────────────────────────────────────────────
+
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY api/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY api/main.py         ./main.py
+COPY api/model_loader.py ./model_loader.py
+
+# Only DistilBERT artefact (269 MB)
+COPY models/distilbert/ ./models/distilbert/
+
+# Pod only serves DistilBERT requests
+ENV MODEL_TYPE=distilbert
+ENV PORT=8080
+
+EXPOSE 8080
+
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1 --log-level info

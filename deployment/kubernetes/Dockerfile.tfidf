@@ -1,0 +1,32 @@
+# ── Dockerfile.tfidf ──────────────────────────────────────────────────────
+# Lightweight image: TF-IDF + LogReg only (no torch, no transformers).
+# Used for the tfidf-service Kubernetes Deployment.
+# Image size: ~350 MB (scikit-learn + FastAPI, no GPU dependencies)
+# Memory request: 256Mi  |  Memory limit: 512Mi
+# ─────────────────────────────────────────────────────────────────────────
+
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Lean requirements — no torch/transformers
+COPY api/requirements_tfidf.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY api/main.py         ./main.py
+COPY api/model_loader.py ./model_loader.py
+
+# Only TF-IDF artefact (3.2 MB)
+COPY models/baseline/ ./models/baseline/
+
+# Pod only serves TF-IDF requests
+ENV MODEL_TYPE=tfidf
+ENV PORT=8080
+
+EXPOSE 8080
+
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1 --log-level info

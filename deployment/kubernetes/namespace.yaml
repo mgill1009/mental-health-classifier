@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mh-classifier
+  labels:
+    project: mental-health-classifier
+    course: cmpt756

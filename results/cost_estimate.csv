@@ -1,0 +1,9 @@
+platform,rps,est_monthly_usd,cost_model,breakeven_rps
+GKE (2x e2-standard-4),1,192.96,Fixed — always-on nodes,15.5
+Cloud Run,1,12.44,Variable — pay per request,15.5
+GKE (2x e2-standard-4),10,192.96,Fixed — always-on nodes,15.5
+Cloud Run,10,124.42,Variable — pay per request,15.5
+GKE (2x e2-standard-4),50,192.96,Fixed — always-on nodes,15.5
+Cloud Run,50,622.08,Variable — pay per request,15.5
+GKE (2x e2-standard-4),200,192.96,Fixed — always-on nodes,15.5
+Cloud Run,200,2488.32,Variable — pay per request,15.5

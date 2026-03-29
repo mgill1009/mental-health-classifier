@@ -1,0 +1,9 @@
+[2026-03-28 23:19:21,845] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-03-28 23:19:21,848] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
+[2026-03-28 23:19:21,848] MacBookPro/INFO/locustfile: Test started | users=1
+[2026-03-28 23:19:21,849] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-03-28 23:19:21,849] MacBookPro/INFO/locust.runners: All users spawned: {"GkeDistilBert": 1} (1 total users)
+[2026-03-28 23:20:21,705] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-03-28 23:20:21,748] MacBookPro/INFO/locustfile: Test finished | requests=46 | failures=0 | p50=300ms | p95=450ms | p99=480ms | rps=0.7
+[2026-03-28 23:20:21,794] MacBookPro/INFO/locust.main: writing html report to file: results/gke_distilbert_steady.html
+[2026-03-28 23:20:21,795] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

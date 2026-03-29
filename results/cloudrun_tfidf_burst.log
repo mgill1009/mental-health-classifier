@@ -1,0 +1,9 @@
+[2026-03-28 23:34:09,483] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-03-28 23:34:09,485] MacBookPro/INFO/locust.main: Run time limit set to 100 seconds
+[2026-03-28 23:34:09,486] MacBookPro/INFO/locustfile: Test started | users=100
+[2026-03-28 23:34:09,487] MacBookPro/INFO/locust.runners: Ramping to 100 users at a rate of 10.00 per second
+[2026-03-28 23:34:18,505] MacBookPro/INFO/locust.runners: All users spawned: {"CloudRunTfIdf": 100} (100 total users)
+[2026-03-28 23:35:49,245] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-03-28 23:35:49,317] MacBookPro/INFO/locustfile: Test finished | requests=7771 | failures=0 | p50=70ms | p95=160ms | p99=270ms | rps=91.5
+[2026-03-28 23:35:49,355] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_tfidf_burst.html
+[2026-03-28 23:35:49,356] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

@@ -1,0 +1,10 @@
+# requirements_tfidf.txt
+# Minimal dependencies for TF-IDF-only container
+# No torch, no transformers — keeps image at ~350 MB vs ~2.4 GB
+
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+scikit-learn==1.8.0
+joblib==1.4.2
+numpy==1.26.4

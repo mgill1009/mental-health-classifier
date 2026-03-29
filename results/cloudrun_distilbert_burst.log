@@ -1,0 +1,64 @@
+[2026-03-28 23:35:50,224] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-03-28 23:35:50,227] MacBookPro/INFO/locust.main: Run time limit set to 100 seconds
+[2026-03-28 23:35:50,227] MacBookPro/INFO/locustfile: Test started | users=100
+[2026-03-28 23:35:50,228] MacBookPro/INFO/locust.runners: Ramping to 100 users at a rate of 10.00 per second
+[2026-03-28 23:35:52,046] MacBookPro/WARNING/locustfile: High latency: 1330.4ms | [cloudrun] distilbert
+[2026-03-28 23:35:52,136] MacBookPro/WARNING/locustfile: High latency: 1468.16ms | [cloudrun] distilbert
+[2026-03-28 23:35:52,304] MacBookPro/WARNING/locustfile: High latency: 1644.27ms | [cloudrun] distilbert
+[2026-03-28 23:35:53,330] MacBookPro/WARNING/locustfile: High latency: 2663.06ms | [cloudrun] distilbert
+[2026-03-28 23:35:53,332] MacBookPro/WARNING/locustfile: High latency: 2656.92ms | [cloudrun] distilbert
+[2026-03-28 23:35:53,681] MacBookPro/WARNING/locustfile: High latency: 2827.57ms | [cloudrun] distilbert
+[2026-03-28 23:35:53,682] MacBookPro/WARNING/locustfile: High latency: 2828.97ms | [cloudrun] distilbert
+[2026-03-28 23:35:54,286] MacBookPro/WARNING/locustfile: High latency: 505.63ms | [cloudrun] distilbert
+[2026-03-28 23:35:54,318] MacBookPro/WARNING/locustfile: High latency: 509.61ms | [cloudrun] distilbert
+[2026-03-28 23:35:54,344] MacBookPro/WARNING/locustfile: High latency: 510.03ms | [cloudrun] distilbert
+[2026-03-28 23:35:55,406] MacBookPro/WARNING/locustfile: High latency: 566.2ms | [cloudrun] distilbert
+[2026-03-28 23:35:56,844] MacBookPro/WARNING/locustfile: High latency: 516.28ms | [cloudrun] distilbert
+[2026-03-28 23:35:57,853] MacBookPro/WARNING/locustfile: High latency: 512.03ms | [cloudrun] distilbert
+[2026-03-28 23:35:59,256] MacBookPro/INFO/locust.runners: All users spawned: {"CloudRunDistilBert": 100} (100 total users)
+[2026-03-28 23:35:59,578] MacBookPro/WARNING/locustfile: High latency: 1295.48ms | [cloudrun] distilbert
+[2026-03-28 23:35:59,915] MacBookPro/WARNING/locustfile: High latency: 1141.21ms | [cloudrun] distilbert
+[2026-03-28 23:35:59,917] MacBookPro/WARNING/locustfile: High latency: 501.42ms | [cloudrun] distilbert
+[2026-03-28 23:36:06,725] MacBookPro/WARNING/locustfile: High latency: 504.85ms | [cloudrun] distilbert
+[2026-03-28 23:36:09,178] MacBookPro/WARNING/locustfile: High latency: 566.14ms | [cloudrun] distilbert
+[2026-03-28 23:36:09,671] MacBookPro/WARNING/locustfile: High latency: 503.41ms | [cloudrun] distilbert
+[2026-03-28 23:36:10,069] MacBookPro/WARNING/locustfile: High latency: 505.13ms | [cloudrun] distilbert
+[2026-03-28 23:36:10,182] MacBookPro/WARNING/locustfile: High latency: 503.6ms | [cloudrun] distilbert
+[2026-03-28 23:36:18,435] MacBookPro/WARNING/locustfile: High latency: 515.45ms | [cloudrun] distilbert
+[2026-03-28 23:36:18,623] MacBookPro/WARNING/locustfile: High latency: 551.55ms | [cloudrun] distilbert
+[2026-03-28 23:36:18,657] MacBookPro/WARNING/locustfile: High latency: 564.64ms | [cloudrun] distilbert
+[2026-03-28 23:36:19,019] MacBookPro/WARNING/locustfile: High latency: 580.9ms | [cloudrun] distilbert
+[2026-03-28 23:36:19,130] MacBookPro/WARNING/locustfile: High latency: 500.42ms | [cloudrun] distilbert
+[2026-03-28 23:36:19,184] MacBookPro/WARNING/locustfile: High latency: 526.14ms | [cloudrun] distilbert
+[2026-03-28 23:36:23,933] MacBookPro/WARNING/locustfile: High latency: 505.98ms | [cloudrun] distilbert
+[2026-03-28 23:36:40,898] MacBookPro/WARNING/locustfile: High latency: 524.72ms | [cloudrun] distilbert
+[2026-03-28 23:36:43,424] MacBookPro/WARNING/locustfile: High latency: 504.64ms | [cloudrun] distilbert
+[2026-03-28 23:36:44,550] MacBookPro/WARNING/locustfile: High latency: 523.8ms | [cloudrun] distilbert
+[2026-03-28 23:36:49,321] MacBookPro/WARNING/locustfile: High latency: 505.9ms | [cloudrun] distilbert
+[2026-03-28 23:37:03,350] MacBookPro/WARNING/locustfile: High latency: 546.0ms | [cloudrun] distilbert
+[2026-03-28 23:37:03,353] MacBookPro/WARNING/locustfile: High latency: 506.6ms | [cloudrun] distilbert
+[2026-03-28 23:37:03,873] MacBookPro/WARNING/locustfile: High latency: 518.36ms | [cloudrun] distilbert
+[2026-03-28 23:37:05,258] MacBookPro/WARNING/locustfile: High latency: 509.32ms | [cloudrun] distilbert
+[2026-03-28 23:37:05,340] MacBookPro/WARNING/locustfile: High latency: 587.22ms | [cloudrun] distilbert
+[2026-03-28 23:37:05,445] MacBookPro/WARNING/locustfile: High latency: 524.04ms | [cloudrun] distilbert
+[2026-03-28 23:37:05,849] MacBookPro/WARNING/locustfile: High latency: 502.98ms | [cloudrun] distilbert
+[2026-03-28 23:37:06,011] MacBookPro/WARNING/locustfile: High latency: 522.67ms | [cloudrun] distilbert
+[2026-03-28 23:37:06,017] MacBookPro/WARNING/locustfile: High latency: 579.88ms | [cloudrun] distilbert
+[2026-03-28 23:37:06,546] MacBookPro/WARNING/locustfile: High latency: 524.57ms | [cloudrun] distilbert
+[2026-03-28 23:37:06,862] MacBookPro/WARNING/locustfile: High latency: 546.84ms | [cloudrun] distilbert
+[2026-03-28 23:37:06,909] MacBookPro/WARNING/locustfile: High latency: 575.45ms | [cloudrun] distilbert
+[2026-03-28 23:37:07,151] MacBookPro/WARNING/locustfile: High latency: 504.43ms | [cloudrun] distilbert
+[2026-03-28 23:37:07,442] MacBookPro/WARNING/locustfile: High latency: 527.58ms | [cloudrun] distilbert
+[2026-03-28 23:37:07,443] MacBookPro/WARNING/locustfile: High latency: 575.95ms | [cloudrun] distilbert
+[2026-03-28 23:37:09,349] MacBookPro/WARNING/locustfile: High latency: 516.19ms | [cloudrun] distilbert
+[2026-03-28 23:37:14,563] MacBookPro/WARNING/locustfile: High latency: 505.97ms | [cloudrun] distilbert
+[2026-03-28 23:37:15,514] MacBookPro/WARNING/locustfile: High latency: 571.82ms | [cloudrun] distilbert
+[2026-03-28 23:37:15,562] MacBookPro/WARNING/locustfile: High latency: 503.12ms | [cloudrun] distilbert
+[2026-03-28 23:37:16,522] MacBookPro/WARNING/locustfile: High latency: 563.45ms | [cloudrun] distilbert
+[2026-03-28 23:37:23,316] MacBookPro/WARNING/locustfile: High latency: 503.36ms | [cloudrun] distilbert
+[2026-03-28 23:37:28,346] MacBookPro/WARNING/locustfile: High latency: 516.62ms | [cloudrun] distilbert
+[2026-03-28 23:37:29,893] MacBookPro/WARNING/locustfile: High latency: 503.11ms | [cloudrun] distilbert
+[2026-03-28 23:37:30,019] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-03-28 23:37:30,087] MacBookPro/INFO/locustfile: Test finished | requests=2349 | failures=0 | p50=1400ms | p95=9000ms | p99=9400ms | rps=23.5
+[2026-03-28 23:37:30,139] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_distilbert_burst.html
+[2026-03-28 23:37:30,140] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

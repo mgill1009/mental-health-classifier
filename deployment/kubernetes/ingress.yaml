@@ -1,0 +1,72 @@
+# ── ingress.yaml ──────────────────────────────────────────────────────────
+# GKE Ingress — routes external traffic to the correct internal service
+# based on the ?model= query parameter.
+#
+# Architecture note:
+#   The Ingress provides a single external IP. Internally, traffic is routed
+#   to separate ClusterIP services (tfidf-service, distilbert-service).
+#   This gives us independent scaling, resource allocation, and health
+#   monitoring per model — which is the core architectural benefit of
+#   running separate Kubernetes Deployments.
+#
+# Path-based routing:
+#   /tfidf/*       → tfidf-service:80
+#   /distilbert/*  → distilbert-service:80
+#   /health        → tfidf-service:80  (lightweight liveness endpoint)
+#
+# Clients call:
+#   POST https://<INGRESS_IP>/tfidf/predict
+#   POST https://<INGRESS_IP>/distilbert/predict
+# ─────────────────────────────────────────────────────────────────────────
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mh-classifier-ingress
+  namespace: mh-classifier
+  annotations:
+    # GKE native Ingress controller (HTTP(S) Load Balancer)
+    kubernetes.io/ingress.class: "gce"
+    # Preserve source IP for accurate latency attribution in logs
+    kubernetes.io/ingress.allow-http: "true"
+    # Health check path — GCP LB probes this to determine instance health
+    # Must return 200; our /health endpoint qualifies
+    ingress.gcp.kubernetes.io/pre-shared-cert: ""
+spec:
+  rules:
+    - http:
+        paths:
+          # TF-IDF routes
+          - path: /tfidf
+            pathType: Prefix
+            backend:
+              service:
+                name: tfidf-service
+                port:
+                  number: 80
+
+          # DistilBERT routes
+          - path: /distilbert
+            pathType: Prefix
+            backend:
+              service:
+                name: distilbert-service
+                port:
+                  number: 80
+
+          # Shared health/labels endpoints (route to tfidf — lightweight)
+          - path: /health
+            pathType: Exact
+            backend:
+              service:
+                name: tfidf-service
+                port:
+                  number: 80
+
+          - path: /labels
+            pathType: Exact
+            backend:
+              service:
+                name: tfidf-service
+                port:
+                  number: 80

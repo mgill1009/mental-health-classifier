@@ -1,0 +1,59 @@
+# ── distilbert/hpa.yaml ───────────────────────────────────────────────────
+# HPA for DistilBERT deployment.
+#
+# Key difference from TF-IDF HPA:
+#   • Lower max replicas (4 vs 10) — each pod costs ~3× more RAM
+#   • Longer stabilisation windows — DistilBERT pods take ~45s to become Ready
+#     (model load time); aggressive scale-up would thrash the cluster
+#   • Memory is co-primary signal — DistilBERT is memory-intensive, not just
+#     CPU-intensive under CPU inference
+#
+# Auto-scaling metric (concrete answer to professor feedback):
+#   kubectl get hpa distilbert-hpa -n mh-classifier -w
+#   Output columns: NAME | REFERENCE | TARGETS | MINPODS | MAXPODS | REPLICAS
+#   Record REPLICAS column at 10s intervals during Locust burst test.
+#   Scale-up latency = time from TARGETS>60% until REPLICAS increases.
+# ─────────────────────────────────────────────────────────────────────────
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: distilbert-hpa
+  namespace: mh-classifier
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: distilbert-deployment
+
+  minReplicas: 1
+  maxReplicas: 4
+
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75    # lower than TF-IDF — DistilBERT approaches limit faster
+
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60    # slower to react — pod startup is ~45s anyway
+      policies:
+        - type: Pods
+          value: 1                       # add 1 pod at a time (cost-aware)
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300   # 5 min cool-down — model reload is expensive
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 120

@@ -1,0 +1,23 @@
+# ── tfidf/service.yaml ────────────────────────────────────────────────────
+# ClusterIP exposes the TF-IDF deployment internally.
+# Traffic reaches it via the Ingress (external) or directly from other
+# in-cluster services.
+# ─────────────────────────────────────────────────────────────────────────
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfidf-service
+  namespace: mh-classifier
+  labels:
+    app: tfidf-service
+    model: tfidf
+spec:
+  type: ClusterIP
+  selector:
+    app: tfidf-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP

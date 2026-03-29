@@ -1,0 +1,9 @@
+[2026-03-28 23:18:21,922] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-03-28 23:18:21,924] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
+[2026-03-28 23:18:21,924] MacBookPro/INFO/locustfile: Test started | users=1
+[2026-03-28 23:18:21,924] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-03-28 23:18:21,925] MacBookPro/INFO/locust.runners: All users spawned: {"GkeTfIdf": 1} (1 total users)
+[2026-03-28 23:19:21,051] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-03-28 23:19:21,109] MacBookPro/INFO/locustfile: Test finished | requests=54 | failures=0 | p50=68ms | p95=140ms | p99=150ms | rps=0.9
+[2026-03-28 23:19:21,153] MacBookPro/INFO/locust.main: writing html report to file: results/gke_tfidf_steady.html
+[2026-03-28 23:19:21,154] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

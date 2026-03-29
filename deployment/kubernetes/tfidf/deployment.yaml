@@ -1,0 +1,81 @@
+# ── tfidf/deployment.yaml ─────────────────────────────────────────────────
+# TF-IDF + LogReg serving deployment.
+# Low memory footprint allows generous replica count without cost penalty.
+# HPA targets 60% CPU — TF-IDF is CPU-bound (no GPU) so CPU is the correct
+# scaling signal.
+# ─────────────────────────────────────────────────────────────────────────
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfidf-deployment
+  namespace: mh-classifier
+  labels:
+    app: tfidf-service
+    model: tfidf
+    project: mental-health-classifier
+spec:
+  replicas: 2                     # start with 2; HPA scales 2–10
+  selector:
+    matchLabels:
+      app: tfidf-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0           # zero-downtime rollout
+  template:
+    metadata:
+      labels:
+        app: tfidf-service
+        model: tfidf
+    spec:
+      # ── Grace period ──────────────────────────────────────────────────
+      # Allow in-flight requests to complete before pod terminates
+      terminationGracePeriodSeconds: 30
+
+      containers:
+        - name: tfidf-api
+          # Replace mh-classifier with your GCP project after build
+          image: us-central1-docker.pkg.dev/mh-classifier/mh-classifier/tfidf-api:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+              name: http
+
+          env:
+            - name: MODEL_TYPE
+              value: "tfidf"
+            - name: PORT
+              value: "8080"
+
+          # ── Resource allocation ───────────────────────────────────────
+          # TF-IDF pipeline: 3.2 MB model, scikit-learn inference ~2ms
+          # 256Mi comfortably fits model + Python overhead
+          resources:
+            requests:
+              cpu: "100m"           # 0.1 vCPU — TF-IDF is lightweight
+              memory: "256Mi"
+            limits:
+              cpu: "500m"           # cap at 0.5 vCPU per pod
+              memory: "512Mi"
+
+          # ── Health probes ─────────────────────────────────────────────
+          # Liveness: restart pod if app hangs
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            failureThreshold: 3
+
+          # Readiness: stop sending traffic until model is loaded
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3
