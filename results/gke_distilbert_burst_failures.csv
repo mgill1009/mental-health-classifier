@@ -1,2 +1,2 @@
 Method,Name,Error,Occurrences
-POST,[gke] distilbert,CatchResponseError('HTTP 502'),2381
+POST,[gke] distilbert,CatchResponseError('HTTP 502'),119

@@ -1,9 +1,10 @@
-[2026-03-29 14:24:33,992] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
-[2026-03-29 14:24:33,995] MacBookPro/INFO/locust.main: Run time limit set to 300 seconds
-[2026-03-29 14:24:33,996] MacBookPro/INFO/locustfile: Test started | users=1
-[2026-03-29 14:24:33,996] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
-[2026-03-29 14:24:33,996] MacBookPro/INFO/locust.runners: All users spawned: {"ColdStartProbeDistilBert": 1} (1 total users)
-[2026-03-29 14:24:59,656] MacBookPro/INFO/locustfile: COLD START DISTILBERT | wall_ms=25661 | model_ms=3331.4 | overhead_ms=22329
-[2026-03-29 14:29:33,767] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
-[2026-03-29 14:29:33,839] MacBookPro/INFO/locustfile: Test finished | requests=1 | failures=0 | p50=26000ms | p95=26000ms | p99=26000ms | rps=0.0
-[2026-03-29 14:29:33,840] MacBookPro/INFO/locust.main: Shutting down (exit code 0)
+[2026-04-01 15:31:14,805] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-04-01 15:31:14,808] MacBookPro/INFO/locust.main: Run time limit set to 300 seconds
+[2026-04-01 15:31:14,808] MacBookPro/INFO/locustfile: Test started | users=1
+[2026-04-01 15:31:14,808] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-04-01 15:31:14,809] MacBookPro/INFO/locust.runners: All users spawned: {"ColdStartProbeDistilBert": 1} (1 total users)
+[2026-04-01 15:31:49,350] MacBookPro/INFO/locustfile: COLD START DISTILBERT | wall_ms=34541 | model_ms=3277.3 | overhead_ms=31264
+[2026-04-01 15:36:14,600] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-01 15:36:14,671] MacBookPro/INFO/locustfile: Test finished | requests=1 | failures=0 | p50=35000ms | p95=35000ms | p99=35000ms | rps=0.0
+[2026-04-01 15:36:14,710] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_distilbert_true_coldstart.html
+[2026-04-01 15:36:14,711] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

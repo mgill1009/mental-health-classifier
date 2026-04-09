@@ -26,8 +26,8 @@ spec:
     kind: Deployment
     name: distilbert-deployment
 
-  minReplicas: 1
-  maxReplicas: 4
+  minReplicas: 2
+  maxReplicas: 10
 
   metrics:
     - type: Resource

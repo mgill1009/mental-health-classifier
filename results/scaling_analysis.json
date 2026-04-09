@@ -1,14 +1,14 @@
 {
   "tfidf": {
     "baseline_replicas": 2,
-    "peak_replicas": 6,
-    "scale_up_latency_s": 61,
-    "note": "Scaled from 2 to 6 pods in 61s"
+    "peak_replicas": 7,
+    "scale_up_latency_s": 41,
+    "note": "Scaled from 2 to 7 pods in 41s"
   },
   "distilbert": {
-    "baseline_replicas": 1,
-    "peak_replicas": 2,
-    "scale_up_latency_s": 0,
-    "note": "Scaled from 1 to 2 pods in 0s"
+    "baseline_replicas": 2,
+    "peak_replicas": 5,
+    "scale_up_latency_s": 320,
+    "note": "Scaled from 2 to 5 pods in 320s"
   }
 }

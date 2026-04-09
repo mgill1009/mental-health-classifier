@@ -15,7 +15,7 @@ metadata:
     model: distilbert
     project: mental-health-classifier
 spec:
-  replicas: 1                     # start with 1; HPA scales 1–4
+  replicas: 2                     # start with 1; HPA scales 1–4
   selector:
     matchLabels:
       app: distilbert-service

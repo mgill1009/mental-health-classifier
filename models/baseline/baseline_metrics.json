@@ -1,23 +1,23 @@
 {
   "model": "TF-IDF + Logistic Regression",
-  "train_time_s": 8.61,
+  "train_time_s": 7.51,
   "vocabulary_size": 50000,
-  "load_time_p50_ms": 167.19,
-  "load_time_p99_ms": 220.54,
-  "predict_p50_ms": 0.3682,
-  "predict_p95_ms": 0.5415,
-  "predict_p99_ms": 0.7167,
+  "load_time_p50_ms": 155.44,
+  "load_time_p99_ms": 163.9,
+  "predict_p50_ms": 0.3802,
+  "predict_p95_ms": 0.6079,
+  "predict_p99_ms": 0.7971,
   "val": {
-    "accuracy": 0.868,
-    "macro_f1": 0.8481,
-    "weighted_f1": 0.87
+    "accuracy": 0.8683,
+    "macro_f1": 0.8483,
+    "weighted_f1": 0.8703
   },
   "test": {
-    "accuracy": 0.7903,
-    "macro_f1": 0.7837,
-    "weighted_f1": 0.7923
+    "accuracy": 0.7923,
+    "macro_f1": 0.7862,
+    "weighted_f1": 0.7944
   },
-  "cv_macro_f1_mean": 0.8532,
+  "cv_macro_f1_mean": 0.8528,
   "cv_macro_f1_std": 0.0031,
   "fn_high_risk_count": 114,
   "fn_high_risk_pct": 23.0

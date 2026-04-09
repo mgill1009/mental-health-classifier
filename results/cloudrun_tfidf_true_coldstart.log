@@ -1,9 +1,10 @@
-[2026-03-29 14:12:38,760] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
-[2026-03-29 14:12:38,764] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
-[2026-03-29 14:12:38,764] MacBookPro/INFO/locustfile: Test started | users=1
-[2026-03-29 14:12:38,765] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
-[2026-03-29 14:12:38,765] MacBookPro/INFO/locust.runners: All users spawned: {"ColdStartProbeTfIdf": 1} (1 total users)
-[2026-03-29 14:12:43,734] MacBookPro/INFO/locustfile: COLD START TF-IDF | wall_ms=4969 | model_ms=11.5 | overhead_ms=4958
-[2026-03-29 14:13:38,485] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
-[2026-03-29 14:13:38,556] MacBookPro/INFO/locustfile: Test finished | requests=1 | failures=0 | p50=5000ms | p95=5000ms | p99=5000ms | rps=0.0
-[2026-03-29 14:13:38,556] MacBookPro/INFO/locust.main: Shutting down (exit code 0)
+[2026-04-01 15:25:13,674] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-04-01 15:25:13,676] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
+[2026-04-01 15:25:13,677] MacBookPro/INFO/locustfile: Test started | users=1
+[2026-04-01 15:25:13,677] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-04-01 15:25:13,677] MacBookPro/INFO/locust.runners: All users spawned: {"ColdStartProbeTfIdf": 1} (1 total users)
+[2026-04-01 15:25:24,121] MacBookPro/INFO/locustfile: COLD START TF-IDF | wall_ms=10444 | model_ms=10.7 | overhead_ms=10433
+[2026-04-01 15:26:13,469] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-01 15:26:13,526] MacBookPro/INFO/locustfile: Test finished | requests=1 | failures=0 | p50=10000ms | p95=10000ms | p99=10000ms | rps=0.0
+[2026-04-01 15:26:13,574] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_tfidf_true_coldstart.html
+[2026-04-01 15:26:13,575] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

@@ -1,10 +1,17 @@
-[2026-03-28 23:28:52,506] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
-[2026-03-28 23:28:52,509] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
-[2026-03-28 23:28:52,509] MacBookPro/INFO/locustfile: Test started | users=1
-[2026-03-28 23:28:52,509] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
-[2026-03-28 23:28:52,510] MacBookPro/INFO/locust.runners: All users spawned: {"CloudRunDistilBert": 1} (1 total users)
-[2026-03-28 23:28:56,303] MacBookPro/WARNING/locustfile: High latency: 3433.3ms | [cloudrun] distilbert
-[2026-03-28 23:29:52,308] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
-[2026-03-28 23:29:52,345] MacBookPro/INFO/locustfile: Test finished | requests=39 | failures=0 | p50=480ms | p95=610ms | p99=3800ms | rps=0.7
-[2026-03-28 23:29:52,531] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_distilbert_steady.html
-[2026-03-28 23:29:52,535] MacBookPro/INFO/locust.main: Shutting down (exit code 0)
+[2026-04-01 14:58:27,380] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
+[2026-04-01 14:58:27,383] MacBookPro/INFO/locust.main: Run time limit set to 60 seconds
+[2026-04-01 14:58:27,383] MacBookPro/INFO/locustfile: Test started | users=1
+[2026-04-01 14:58:27,383] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-04-01 14:58:27,383] MacBookPro/INFO/locust.runners: All users spawned: {"CloudRunDistilBert": 1} (1 total users)
+[2026-04-01 14:58:29,534] MacBookPro/WARNING/locustfile: High latency: 2030.87ms | [cloudrun] distilbert
+[2026-04-01 14:58:38,167] MacBookPro/WARNING/locustfile: High latency: 509.27ms | [cloudrun] distilbert
+[2026-04-01 14:58:42,926] MacBookPro/WARNING/locustfile: High latency: 503.25ms | [cloudrun] distilbert
+[2026-04-01 14:58:49,023] MacBookPro/WARNING/locustfile: High latency: 503.26ms | [cloudrun] distilbert
+[2026-04-01 14:58:56,925] MacBookPro/WARNING/locustfile: High latency: 523.39ms | [cloudrun] distilbert
+[2026-04-01 14:59:06,751] MacBookPro/WARNING/locustfile: High latency: 515.01ms | [cloudrun] distilbert
+[2026-04-01 14:59:12,539] MacBookPro/WARNING/locustfile: High latency: 512.81ms | [cloudrun] distilbert
+[2026-04-01 14:59:23,619] MacBookPro/WARNING/locustfile: High latency: 575.03ms | [cloudrun] distilbert
+[2026-04-01 14:59:27,182] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
+[2026-04-01 14:59:27,247] MacBookPro/INFO/locustfile: Test finished | requests=38 | failures=0 | p50=560ms | p95=730ms | p99=2200ms | rps=0.6
+[2026-04-01 14:59:27,285] MacBookPro/INFO/locust.main: writing html report to file: results/cloudrun_distilbert_steady.html
+[2026-04-01 14:59:27,286] MacBookPro/INFO/locust.main: Shutting down (exit code 0)

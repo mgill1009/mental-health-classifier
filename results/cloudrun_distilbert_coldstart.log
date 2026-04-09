@@ -1,9 +1,0 @@
-[2026-03-29 12:11:09,206] MacBookPro/INFO/locust.main: Starting Locust 2.43.3
-[2026-03-29 12:11:09,209] MacBookPro/INFO/locust.main: Run time limit set to 120 seconds
-[2026-03-29 12:11:09,210] MacBookPro/INFO/locustfile: Test started | users=1
-[2026-03-29 12:11:09,210] MacBookPro/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
-[2026-03-29 12:11:09,210] MacBookPro/INFO/locust.runners: All users spawned: {"ColdStartProbe": 1} (1 total users)
-[2026-03-29 12:11:31,845] MacBookPro/INFO/locustfile: COLD START RESULT | wall_ms=22635 | model_ms=3272.4 | overhead_ms=19363
-[2026-03-29 12:13:08,950] MacBookPro/INFO/locust.main: --run-time limit reached, shutting down
-[2026-03-29 12:13:09,027] MacBookPro/INFO/locustfile: Test finished | requests=1 | failures=0 | p50=23000ms | p95=23000ms | p99=23000ms | rps=0.0
-[2026-03-29 12:13:09,028] MacBookPro/INFO/locust.main: Shutting down (exit code 0)
