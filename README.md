@@ -5,7 +5,8 @@ A 3-class mental health risk classifier comparing two GCP deployment architectur
 
 > **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
 
-![Architecture Diagram](docs/architecture_diagram.svg)
+![Architecture Diagram](docs/architecture.png)
+![Architecture Diagram](docs/deployment_architecture.png)
 
 ---
 
