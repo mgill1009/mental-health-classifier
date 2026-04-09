@@ -331,7 +331,7 @@ bash deployment/scripts/03_deploy_gke.sh        # ~10 min
 bash deployment/scripts/99_teardown.sh
 ```
 
-> ⚠️ Run teardown when finished. A 3-node GKE cluster costs ~$0.40/hr even when idle.
+> Run teardown when finished. A 3-node GKE cluster costs ~$0.40/hr even when idle.
 
 ---
 
