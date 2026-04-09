@@ -1,7 +1,7 @@
 # Mental Health Risk Classifier
 ### Containerized vs. Serverless ML Inference on GCP
 
-A 3-class mental health risk classifier comparing two cloud deployment architectures — **GKE** (containerized, self-orchestrated) vs **Cloud Run** (serverless containers) — for serving ML inference under varying traffic conditions.
+A 3-class mental health risk classifier comparing two GCP deployment architectures — **GKE** (containerized, HPA auto-scaling) vs **Cloud Run** (serverless containers) — for serving ML inference under varying traffic conditions.
 
 > **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
 
@@ -34,8 +34,8 @@ Two models are deployed on both platforms and benchmarked under identical traffi
 
 | Model | Size | Warm p50 | Cold start (isolated) | Purpose |
 |---|---|---|---|---|
-| TF-IDF + Logistic Regression | 3.2 MB | ~68–90ms | ~4,969ms | Lightweight deployment baseline |
-| DistilBERT (fine-tuned) | 269 MB | ~300–480ms | ~25,661ms | High-accuracy transformer model |
+| TF-IDF + Logistic Regression | 3.2 MB | ~69ms | ~10,000ms | Lightweight deployment baseline |
+| DistilBERT (fine-tuned) | 269 MB | ~350ms | ~35,000ms | High-accuracy transformer model |
 
 **Platforms:**
 
@@ -43,6 +43,10 @@ Two models are deployed on both platforms and benchmarked under identical traffi
 |---|---|---|---|
 | GKE (Google Kubernetes Engine) | Containerized | HPA — explicit, measurable | None — pods always warm |
 | Cloud Run | Serverless containers | Google-managed — opaque | Yes — after idle period |
+
+**GKE configuration:** Both models use equal scaling — min=2 pods, max=10 pods, CPU target 60%. 3-node cluster (e2-standard-4, 16 GiB each).
+
+**Cloud Run configuration:** 2 vCPU, 4 GiB memory, concurrency=1 (one request per instance), scales to zero.
 
 ---
 
@@ -70,54 +74,88 @@ Two models are deployed on both platforms and benchmarked under identical traffi
 | High Risk Recall | 0.77 | **0.86** | +0.09 |
 | High Risk FN → Low Risk | 46 (9.3%) | **14 (2.8%)** | −70% |
 
+---
+
 ### Steady Traffic (1 req/sec, warm instances)
 
 | Configuration | p50 (ms) | p99 (ms) | Error % |
 |---|---|---|---|
-| GKE TF-IDF | 68 | 150 | 0.0% |
-| GKE DistilBERT | 300 | 480 | 0.0% |
-| Cloud Run TF-IDF | 90 | 170 | 0.0% |
-| Cloud Run DistilBERT | 480 | 3,800* | 0.0% |
+| GKE TF-IDF | 69 | 170 | 0.0% |
+| GKE DistilBERT | 350 | 490 | 0.0% |
+| Cloud Run TF-IDF | 81 | 15,000* | 0.0% |
+| Cloud Run DistilBERT | 560 | 2,200* | 0.0% |
 
-\*p99 reflects a single cold-start spike on the first request; warm p50 is 480ms.
+\*p99 reflects a single cold-start spike on the first request. Warm p50 values (81ms / 560ms) are representative of steady-state Cloud Run performance.
+
+---
 
 ### Burst Traffic (100 concurrent users)
 
 | Configuration | p50 (ms) | p99 (ms) | RPS | Error % |
 |---|---|---|---|---|
-| GKE TF-IDF | 66 | 190 | 88.4 | **0.02%** |
-| GKE DistilBERT | 61 | 30,000 | 25.6 | **94.07%** |
-| Cloud Run TF-IDF | 70 | 270 | 77.8 | **0.0%** |
-| Cloud Run DistilBERT | 1,300 | 9,400 | 23.6 | **0.0%** |
+| GKE TF-IDF | 70 | 180 | 88.7 | **0.0%** |
+| GKE DistilBERT | 17,000 | 30,000 | 4.8 | **24.74%** |
+| Cloud Run TF-IDF | 79 | 640 | 72.1 | **0.0%** |
+| Cloud Run DistilBERT | 4,200 | 9,300 | 16.5 | **0.0%** |
 
-### Cold-Start (Isolated, dedicated single-model Cloud Run services)
+GKE DistilBERT errors are HTTP 502 responses from the GCE load balancer when the pod pool is overwhelmed before scale-up completes. Cloud Run DistilBERT achieves zero errors by provisioning a separate instance per request, at the cost of higher sustained latency.
 
-| Model | Wall time | Cold overhead | Warm p50 | Cold/warm ratio |
+---
+
+### Medium Load (20 concurrent users — saturation point)
+
+| Configuration | p50 (ms) | p99 (ms) | RPS | Error % |
 |---|---|---|---|---|
-| TF-IDF | 4,969ms | 4,958ms | 90ms | 55× |
-| DistilBERT | 25,661ms | 22,329ms | 480ms | 53× |
+| GKE DistilBERT | 3,000 | 9,000 | 4.4 | **0.0%** |
+| Cloud Run DistilBERT | 510 | 860 | 12.6 | **0.0%** |
 
-> Cold overhead is dominated by Python process startup + framework import, not model size alone. Separate Cloud Run services per model prevent cold-start cost coupling.
+GKE DistilBERT saturates between 20 and 100 users. Estimated saturation point: ~30–40 concurrent users based on throughput capacity of 2 pods at ~350ms inference = ~5.7 req/sec before queueing leads to timeouts.
 
-### GKE Auto-Scaling
+---
 
-| Model | Baseline | Peak | Scale-up latency | Outcome |
-|---|---|---|---|---|
-| TF-IDF | 2 pods | 6 pods | 61s | Absorbed burst, 0.02% errors |
-| DistilBERT | 1 pod | 2 pods | ~120s | Too slow — 94% errors |
+### Cold-Start (Isolated, dedicated single-model Cloud Run services, 15+ min idle)
+
+| Model | Wall time | Warm p50 | Cold/warm ratio |
+|---|---|---|---|
+| TF-IDF | 10,000ms | 81ms | 123× |
+| DistilBERT | 35,000ms | 560ms | 63× |
+
+Cold-start overhead is dominated by Python process startup + framework import (~5–10s shared by both models), not model size alone. DistilBERT adds ~20s for torch import and 269 MB model disk load on top. Using a combined Cloud Run service (both models loaded at startup) makes every cold start pay the full DistilBERT penalty even for TF-IDF queries — separate services per model are required to isolate cold-start costs.
+
+---
+
+### GKE Auto-Scaling (Burst Test)
+
+| Model | Pods (start → peak) | Scale-up latency | Outcome |
+|---|---|---|---|
+| TF-IDF | 2 → 7 | 41 seconds | Absorbed burst — 0% errors |
+| DistilBERT | 2 → 5 | 320 seconds | Too slow — 24.74% errors |
+
+Scale-up latency is bounded below by the readiness probe delay: 15s per new TF-IDF pod, 45s per new DistilBERT pod. This reflects actual model load time and cannot be reduced without reducing model startup cost (quantisation, GPU nodes, or pre-loaded shared volumes).
+
+---
 
 ### Cost Break-Even
 
-Cloud Run is cheaper below **15.5 req/sec** sustained. GKE ($192.96/month fixed) is cheaper above.
+Cloud Run is cheaper below **15.5 req/sec** sustained. GKE (~$193/month fixed) is cheaper above.
+
+| Request rate | GKE | Cloud Run | Cheaper |
+|---|---|---|---|
+| 1 req/sec | $193/month | $12/month | Cloud Run (15×) |
+| 15.5 req/sec | $193/month | $193/month | Break-even |
+| 50 req/sec | $193/month | $622/month | GKE (3.2×) |
+| 200 req/sec | $193/month | $2,488/month | GKE (12.9×) |
+
+---
 
 ### Hypotheses
 
 | ID | Hypothesis | Result |
 |---|---|---|
-| H1 | DistilBERT cold start 5–10× worse than TF-IDF | Confirmed — 5.2× |
-| H2 | Cloud Run cheaper below high req/sec threshold | Confirmed — break-even at 15.5 req/sec |
-| H3 | p99 tail latency higher on Cloud Run under burst | Confirmed |
-| H4 | DistilBERT GKE scale-up slower than TF-IDF | Confirmed — ~120s vs 61s |
+| H1 | DistilBERT cold start 5–10× worse than TF-IDF | Partial — 3.5× (35s vs 10s). Directional finding holds; shared Python startup cost narrows the ratio. |
+| H2 | Cloud Run cheaper below sustained high req/sec | Confirmed — break-even at 15.5 req/sec |
+| H3 | p99 tail latency higher on Cloud Run under burst | Confirmed — CR TF-IDF p99=640ms vs GKE 180ms; CR DistilBERT p99=9,300ms |
+| H4 | DistilBERT GKE scale-up slower than TF-IDF | Confirmed — 320s vs 41s (7.8×). Readiness probe asymmetry is the mechanism. |
 
 ---
 
@@ -154,8 +192,8 @@ mental-health-classifier/
 │   ├── cloudrun/
 │   │   └── Dockerfile                  # Both models, MODEL_TYPE=both
 │   ├── kubernetes/
-│   │   ├── Dockerfile.tfidf            # Lean image ~350MB
-│   │   ├── Dockerfile.distilbert       # Full image ~2.4GB
+│   │   ├── Dockerfile.tfidf            # Lean image ~350 MB
+│   │   ├── Dockerfile.distilbert       # Full image ~2.4 GB
 │   │   ├── namespace.yaml
 │   │   ├── ingress.yaml
 │   │   ├── tfidf/                      # deployment.yaml + service.yaml + hpa.yaml
@@ -167,11 +205,12 @@ mental-health-classifier/
 │       ├── 03_deploy_gke.sh            # Create cluster + apply manifests
 │       └── 99_teardown.sh              # Delete all GCP resources
 ├── tests/
-│   ├── locustfile.py                   # 4 user classes + cold-start probes
-│   ├── 05_run_load_tests.sh            # Runs all scenarios
-│   ├── 06_analyze_results.py           # Summary + scaling + cost analysis
-│   └── 07_plot_results.py              # 6 report-ready charts
+│   ├── locustfile.py                   # Locust user classes + cold-start probes
+│   ├── 05_run_load_tests.sh            # Runs all 4 phases automatically
+│   ├── 06_analyze_results.py           # Summary table + scaling + cost analysis
+│   └── 07_plot_results.py              # Report-ready charts
 ├── results/                            # CSVs, HTML reports, charts
+├── setup_env.sh                        # One-command environment setup
 └── docs/
     └── architecture_diagram.svg
 ```
@@ -183,7 +222,7 @@ mental-health-classifier/
 ### Prerequisites
 
 - Python 3.11+
-- Docker Desktop (with buildx — required for Apple Silicon cross-compilation to linux/amd64)
+- Docker Desktop with buildx (required for Apple Silicon cross-compilation to `linux/amd64`)
 - Google Cloud CLI (`gcloud`)
 - `kubectl`
 
@@ -264,7 +303,7 @@ bash deployment/scripts/02_deploy_cloudrun.sh
 bash deployment/scripts/03_deploy_gke.sh
 ```
 
-### Apple Silicon (M1/M2/M3) — required
+### Apple Silicon (M1/M2/M3)
 
 Cloud Run and GKE require `linux/amd64` images. Use buildx:
 
@@ -278,12 +317,12 @@ The deploy scripts handle this automatically via `01_build_push.sh`.
 
 ### Re-deploying after teardown
 
-Images remain in Artifact Registry. Only the cluster and services need to be recreated:
+Docker images remain in Artifact Registry and do not need to be rebuilt:
 
 ```bash
 source deployment/scripts/00_setup_env.sh
-bash deployment/scripts/02_deploy_cloudrun.sh  
-bash deployment/scripts/03_deploy_gke.sh       
+bash deployment/scripts/02_deploy_cloudrun.sh   # ~3 min
+bash deployment/scripts/03_deploy_gke.sh        # ~10 min
 ```
 
 ### Teardown
@@ -292,37 +331,57 @@ bash deployment/scripts/03_deploy_gke.sh
 bash deployment/scripts/99_teardown.sh
 ```
 
-> Run teardown when finished. The GKE cluster costs ~$0.27/hr for 2 nodes even when idle.
+> ⚠️ Run teardown when finished. A 3-node GKE cluster costs ~$0.40/hr even when idle.
 
 ---
 
 ## Load Testing
 
+### One-command environment setup
+
+After deployment, run this once per terminal session:
+
 ```bash
-# Set URLs from deploy script output
-export GKE_URL="http://<gke-ingress-ip>"
-export CLOUDRUN_URL="https://<cloudrun-url>"
-
-pip install locust
-bash tests/05_run_load_tests.sh
-
-# Analyze and plot results
-python3 tests/06_analyze_results.py
-python3 tests/07_plot_results.py
+source setup_env.sh
 ```
 
-**Available Locust classes:**
+This exports `GKE_URL`, `CLOUDRUN_URL`, `TFIDF_SERVICE_URL`, and `DISTILBERT_SERVICE_URL` in one step.
 
-| Class | Platform | Model | Scenario |
-|---|---|---|---|
-| `GkeTfIdf` | GKE | TF-IDF | Steady + burst |
-| `GkeDistilBert` | GKE | DistilBERT | Steady + burst |
-| `CloudRunTfIdf` | Cloud Run | TF-IDF | Steady + burst |
-| `CloudRunDistilBert` | Cloud Run | DistilBERT | Steady + burst |
-| `ColdStartProbeTfIdf` | Cloud Run (dedicated) | TF-IDF | Cold-start isolation |
-| `ColdStartProbeDistilBert` | Cloud Run (dedicated) | DistilBERT | Cold-start isolation |
+### Running all tests
 
-**Watch GKE auto-scaling live during burst tests:**
+```bash
+pip install locust
+bash tests/05_run_load_tests.sh
+```
+
+The script runs four phases automatically:
+
+| Phase | Scenario | Users | Duration | Purpose |
+|---|---|---|---|---|
+| A | Steady | 1 | 60s × 4 configs | Warm-path baseline latency |
+| B1 | Burst | 100 | 100s × 4 configs | Auto-scaling, error rate, tail latency |
+| B2 | Medium load | 20 | 120s × 2 configs | DistilBERT saturation point |
+| C | Cold start | 1 | 60–300s × 2 probes | First-request wall time after 15 min idle |
+
+### Analyzing results
+
+```bash
+python3 tests/06_analyze_results.py   # Summary table + scaling + cost
+python3 tests/07_plot_results.py      # Charts saved to results/
+```
+
+### Available Locust classes
+
+| Class | Platform | Model |
+|---|---|---|
+| `GkeTfIdf` | GKE | TF-IDF |
+| `GkeDistilBert` | GKE | DistilBERT |
+| `CloudRunTfIdf` | Cloud Run | TF-IDF |
+| `CloudRunDistilBert` | Cloud Run | DistilBERT |
+| `ColdStartProbeTfIdf` | Cloud Run dedicated | TF-IDF cold start |
+| `ColdStartProbeDistilBert` | Cloud Run dedicated | DistilBERT cold start |
+
+### Watch GKE auto-scaling live during burst tests
 
 ```bash
 kubectl get hpa -n mh-classifier -w
@@ -333,9 +392,17 @@ kubectl get hpa -n mh-classifier -w
 ## Known Limitations
 
 - **Not for clinical use.** Research prototype trained on Reddit data only.
-- **CPU inference on GCP.** DistilBERT warm p50 is ~300ms CPU vs ~15ms T4 GPU. Error rates under burst would improve significantly with GPU nodes.
+- **CPU inference on GCP.** DistilBERT warm p50 is ~350ms CPU vs ~15ms on a T4 GPU. Error rates under burst would improve significantly with GPU nodes and INT8 quantisation.
 - **Dataset overlap.** 79.6% shared corpus between primary and secondary datasets reduces effective unique training examples.
 - **Multilingual bias.** Low Risk class dominated by non-English social media content, reducing DistilBERT Low Risk recall (0.76 vs TF-IDF 0.81).
-- **Cold-start coupling.** The combined `MODEL_TYPE=both` Cloud Run service makes every cold start pay the full DistilBERT penalty (~25s). Use separate services per model in production.
-- **GKE min-replicas=1 for DistilBERT.** Setting min-replicas=3 would eliminate the 94% burst error rate at additional idle cost.
+- **Cold-start coupling.** The combined `MODEL_TYPE=both` Cloud Run service makes every cold start pay the full DistilBERT penalty (~35s). Use separate services per model in production.
+- **GKE DistilBERT saturation.** With min=2 pods, the system saturates at ~30–40 concurrent users. Setting min=5–6 pods would raise this ceiling but increases idle cost.
+- **Single-region deployment.** No multi-region availability or failover tested.
+- **Cold-start variability.** Cloud Run cold-start times depend on GCP VM slot availability and vary between measurements. Reported values represent full from-scratch cold starts.
 
+---
+
+## Team
+
+Manpreet Gill · Illia Nasiri · Diana Kozich
+CMPT 756 — Cloud Computing
