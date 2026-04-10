@@ -5,8 +5,45 @@ A 3-class mental health risk classifier comparing two GCP deployment architectur
 
 > **Research prototype only.** Not intended for clinical use, diagnosis, or crisis response.
 
+---
+
+## Key Takeaways
+
+- **Cloud Run** is simpler and more cost-efficient at low traffic (<15.5 req/sec), but suffers from **cold-start latency**.
+- **GKE** provides **stable low latency under sustained load**, but requires careful provisioning and has higher fixed cost.
+- **Model complexity matters:** DistilBERT introduces significant cold-start and scaling challenges compared to TF-IDF.
+- **Burst traffic reveals trade-offs:** Cloud Run avoids errors by scaling per-request, while GKE can fail if scaling lags.
+
+---
+
+## Architecture
+
 ![Architecture Diagram](docs/architecture.png)
 ![Architecture Diagram](docs/deployment_architecture.png)
+
+---
+
+## Quick Start
+
+```bash
+# 1. Configure GCP project
+source deployment/scripts/00_setup_env.sh
+
+# 2. Build and push images
+bash deployment/scripts/01_build_push.sh
+
+# 3. Deploy Cloud Run (~3 min)
+bash deployment/scripts/02_deploy_cloudrun.sh
+
+# 4. Deploy GKE (~10 min)
+bash deployment/scripts/03_deploy_gke.sh
+
+# 5. Run load tests
+bash tests/05_run_load_tests.sh
+
+# 6. Analyze results
+python3 tests/06_analyze_results.py
+python3 tests/07_plot_results.py
 
 ---
 
@@ -159,7 +196,19 @@ Cloud Run is cheaper below **15.5 req/sec** sustained. GKE (~$193/month fixed) i
 | H4 | DistilBERT GKE scale-up slower than TF-IDF | Confirmed — 320s vs 41s (7.8×). Readiness probe asymmetry is the mechanism. |
 
 ---
+### Reproducing Results
 
+```bash
+source setup_env.sh
+pip install locust
+bash tests/05_run_load_tests.sh
+
+python3 tests/06_analyze_results.py
+python3 tests/07_plot_results.py
+```
+Outputs are saved in /results.
+
+---
 ## Project Structure
 
 ```
