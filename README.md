@@ -18,7 +18,9 @@ A 3-class mental health risk classifier comparing two GCP deployment architectur
 
 ## Architecture
 
+#### Modeling and API
 ![Architecture Diagram](docs/architecture.png)
+#### Deployment Architecture
 ![Architecture Diagram](docs/deployment_architecture.png)
 
 ---
