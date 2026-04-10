@@ -44,6 +44,7 @@ bash tests/05_run_load_tests.sh
 # 6. Analyze results
 python3 tests/06_analyze_results.py
 python3 tests/07_plot_results.py
+```
 
 ---
 
